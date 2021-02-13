@@ -1,0 +1,32 @@
+name: 'eslint-remote-tester runner'
+description: 'Run eslint-remote-tester and receive results in Github issue'
+author: 'Ari Perkkio <ari.perkkio@gmail.com>'
+
+branding:
+  icon: 'refresh-cw'
+  color: 'blue'
+
+inputs:
+  issue-title:
+    description: 'Title of issue created for reporting results'
+    reqired: false
+    default: 'Results of eslint-remote-tester-run-action'
+  eslint-remote-tester-config:
+    description: 'Path to eslint-remote-tester.config.js'
+    reqired: false
+    default: 'eslint-remote-tester.config.js'
+  github-token:
+    description: 'GitHub token'
+    required: true
+  repository-initialize-command:
+    description: 'Command used to initialize project after checkout'
+    required: false
+    default: 'yarn install'
+  max-result-count:
+    description: 'Maximum result count to be posted in result comment'
+    required: false
+    default: 50
+
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

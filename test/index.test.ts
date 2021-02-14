@@ -34,6 +34,8 @@ jest.mock('../src/comment-templates', () => ({
     ERROR_TEMPLATE: mockErrorTemplate,
 }));
 
+process.chdir = jest.fn();
+
 async function runEntryPoint() {
     jest.resetModules();
     return require('../src/index').__handleForTests;
@@ -51,6 +53,16 @@ describe('entrypoint', () => {
 
         expect(mockRunTester).toHaveBeenCalledWith(
             'mock-eslint-remote-tester-config'
+        );
+    });
+
+    test('sets working-directory', async () => {
+        (process.chdir as jest.Mock).mockClear();
+
+        await runEntryPoint();
+
+        expect(process.chdir).toHaveBeenCalledWith(
+            process.cwd() + '/mock-working-directory'
         );
     });
 

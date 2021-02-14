@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import * as core from '@actions/core';
 
 import GithubClient from './github-client';
@@ -15,6 +16,11 @@ async function run() {
         const maxResultCount = core.getInput('max-result-count', {
             required: true,
         });
+
+        const workingDirectory = core.getInput('working-directory');
+        if (workingDirectory) {
+            process.chdir(path.join(process.cwd(), workingDirectory));
+        }
 
         await core.group('Running eslint-remote-tester', () =>
             runTester(eslintRemoteTesterConfig)

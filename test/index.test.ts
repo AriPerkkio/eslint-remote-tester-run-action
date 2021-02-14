@@ -1,6 +1,5 @@
 const mockGithub = jest.fn();
 jest.mock('@actions/github', () => mockGithub());
-jest.mock('@actions/exec', () => ({ exec: jest.fn() }));
 
 const mockCore = {
     setFailed: jest.fn(),

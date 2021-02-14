@@ -18,10 +18,6 @@ inputs:
   github-token:
     description: 'GitHub token'
     required: true
-  repository-initialize-command:
-    description: 'Command used to initialize project after checkout'
-    required: false
-    default: 'yarn install'
   max-result-count:
     description: 'Maximum result count to be posted in result comment'
     required: false

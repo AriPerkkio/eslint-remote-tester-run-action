@@ -1,6 +1,5 @@
 import fs from 'fs';
 import * as core from '@actions/core';
-import { exec } from '@actions/exec';
 
 import GithubClient from './github-client';
 import runTester, { RESULTS_TMP } from './run-tester';
@@ -9,22 +8,12 @@ import { Result } from 'eslint-remote-tester/dist/exports-for-compare-action';
 
 async function run() {
     try {
-        const repositoryInitializeCommand = core.getInput(
-            'repository-initialize-command',
-            { required: true }
-        );
         const eslintRemoteTesterConfig = core.getInput(
             'eslint-remote-tester-config',
             { required: true }
         );
         const maxResultCount = core.getInput('max-result-count', {
             required: true,
-        });
-
-        await core.group('Initializing repository', async () => {
-            for (const command of repositoryInitializeCommand.split('\n')) {
-                await exec(command);
-            }
         });
 
         await core.group('Running eslint-remote-tester', () =>

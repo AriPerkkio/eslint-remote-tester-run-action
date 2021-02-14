@@ -22,6 +22,9 @@ inputs:
     description: 'Maximum result count to be posted in result comment'
     required: false
     default: 50
+  working-directory:
+    description: The working directory where action is run
+    required: false
 
 runs:
   using: 'node12'

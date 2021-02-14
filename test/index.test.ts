@@ -90,6 +90,12 @@ describe('entrypoint', () => {
         expect(mockCore.setFailed).toHaveBeenCalledWith('mock-error');
     });
 
+    test('sets job failed when results are found', async () => {
+        await runEntryPoint();
+
+        expect(mockCore.setFailed).toHaveBeenCalledWith('Found 2 results');
+    });
+
     test('skips result posting when there are 0 results', async () => {
         mockFs.readFileSync.mockReturnValueOnce('[]');
         await runEntryPoint();
@@ -98,5 +104,6 @@ describe('entrypoint', () => {
         expect(mockCore.info).toHaveBeenCalledWith(
             'Skipping result posting due to 0 results'
         );
+        expect(mockCore.setFailed).not.toHaveBeenCalled();
     });
 });

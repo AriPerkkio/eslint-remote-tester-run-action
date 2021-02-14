@@ -5933,15 +5933,20 @@ async function run() {
       process.chdir(import_path3.default.join(process.cwd(), workingDirectory));
     }
     await core3.group("Running eslint-remote-tester", () => runTester(eslintRemoteTesterConfig));
-    await core3.group("Posting results", async () => {
+    const resultCount = await core3.group("Posting results", async () => {
       const comparisonResults = import_fs2.default.readFileSync(RESULTS_TMP, "utf8");
       const results = JSON.parse(comparisonResults);
       if (results.length === 0) {
-        return core3.info("Skipping result posting due to 0 results");
+        core3.info("Skipping result posting due to 0 results");
+        return results.length;
       }
       const resultsComment = COMMENT_TEMPLATE(results, parseInt(maxResultCount));
       await github_client_default.postResults(resultsComment);
+      return results.length;
     });
+    if (resultCount > 0) {
+      core3.setFailed(`Found ${resultCount} results`);
+    }
   } catch (error2) {
     core3.setFailed(error2.message);
     await github_client_default.postResults(ERROR_TEMPLATE(error2));

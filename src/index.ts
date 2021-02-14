@@ -26,12 +26,13 @@ async function run() {
             runTester(eslintRemoteTesterConfig)
         );
 
-        await core.group('Posting results', async () => {
+        const resultCount = await core.group('Posting results', async () => {
             const comparisonResults = fs.readFileSync(RESULTS_TMP, 'utf8');
             const results: Result[] = JSON.parse(comparisonResults);
 
             if (results.length === 0) {
-                return core.info('Skipping result posting due to 0 results');
+                core.info('Skipping result posting due to 0 results');
+                return results.length;
             }
 
             const resultsComment = COMMENT_TEMPLATE(
@@ -40,7 +41,12 @@ async function run() {
             );
 
             await GithubClient.postResults(resultsComment);
+            return results.length;
         });
+
+        if (resultCount > 0) {
+            core.setFailed(`Found ${resultCount} results`);
+        }
     } catch (error) {
         core.setFailed(error.message);
         await GithubClient.postResults(ERROR_TEMPLATE(error));

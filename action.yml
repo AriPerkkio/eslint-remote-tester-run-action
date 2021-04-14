@@ -17,7 +17,8 @@ inputs:
     default: 'eslint-remote-tester.config.js'
   github-token:
     description: 'GitHub token'
-    required: true
+    required: false
+    default: '${{ github.token }}'
   max-result-count:
     description: 'Maximum result count to be posted in result comment'
     required: false

@@ -18,7 +18,7 @@ inputs:
   github-token:
     description: 'GitHub token'
     required: false
-    default: '${{ github.token }}'
+    default: ${{ github.token }}
   max-result-count:
     description: 'Maximum result count to be posted in result comment'
     required: false

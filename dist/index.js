@@ -5925,9 +5925,7 @@ ${limitedResults.map(template).join("\n")}
 async function run() {
   try {
     const eslintRemoteTesterConfig = core3.getInput("eslint-remote-tester-config", {required: true});
-    const maxResultCount = core3.getInput("max-result-count", {
-      required: true
-    });
+    const maxResultCount = core3.getInput("max-result-count");
     const workingDirectory = core3.getInput("working-directory");
     if (workingDirectory) {
       process.chdir(import_path3.default.join(process.cwd(), workingDirectory));

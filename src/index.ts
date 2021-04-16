@@ -13,9 +13,7 @@ async function run() {
             'eslint-remote-tester-config',
             { required: true }
         );
-        const maxResultCount = core.getInput('max-result-count', {
-            required: true,
-        });
+        const maxResultCount = core.getInput('max-result-count');
 
         const workingDirectory = core.getInput('working-directory');
         if (workingDirectory) {

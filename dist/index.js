@@ -5764,7 +5764,7 @@ var import_github = __toModule(require_github());
 var githubToken;
 var issueTitle;
 try {
-  githubToken = core.getInput("github-token", {required: true});
+  githubToken = core.getInput("github-token");
   issueTitle = core.getInput("issue-title", {required: true});
 } catch (error2) {
   core.setFailed(error2.message);

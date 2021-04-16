@@ -5,7 +5,7 @@ let githubToken: string;
 let issueTitle: string;
 
 try {
-    githubToken = core.getInput('github-token', { required: true });
+    githubToken = core.getInput('github-token');
     issueTitle = core.getInput('issue-title', { required: true });
 } catch (error) {
     core.setFailed(error.message);

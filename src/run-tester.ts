@@ -11,6 +11,13 @@ import {
 const INTERNAL_CONFIG = 'eslint-remote-tester-compare-internal.config.js';
 export const RESULTS_TMP = '/tmp/results.json';
 
+/**
+ * Configuration values used internally. These are overwritten from user provided configuration
+ */
+const DEFAULT_CONFIG: Partial<Config> = {
+    cache: false,
+};
+
 // prettier-ignore
 const CONFIGURATION_TEMPLATE = (
     configuration: Config,
@@ -53,13 +60,18 @@ export default async function runTester(configLocation: string): Promise<void> {
     }
 
     // Try-catch required by esbuild
-    let config;
+    let usersConfig;
     // eslint-disable-next-line no-useless-catch
     try {
-        config = require(usersConfigLocation);
+        usersConfig = require(usersConfigLocation);
     } catch (e) {
         throw e;
     }
+
+    const config = {
+        ...DEFAULT_CONFIG,
+        ...usersConfig,
+    };
 
     // Write eslint-remote-tester configuration file
     fs.writeFileSync(

@@ -81,6 +81,12 @@ describe('run-tester', () => {
         `);
     });
 
+    test('cache is disabled by default', async () => {
+        await runTester(CONFIG);
+
+        expect(readRunConfig().cache).toBe(false);
+    });
+
     test('configuration is validated', () => {
         const consolelog = console.log;
         console.log = jest.fn();

@@ -87,6 +87,12 @@ describe('run-tester', () => {
         expect(readRunConfig().cache).toBe(false);
     });
 
+    test('CI is enabled by default', async () => {
+        await runTester(CONFIG);
+
+        expect(readRunConfig().CI).toBe(true);
+    });
+
     test('configuration is validated', () => {
         const consolelog = console.log;
         console.log = jest.fn();

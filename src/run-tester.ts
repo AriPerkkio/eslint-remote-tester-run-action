@@ -16,6 +16,7 @@ export const RESULTS_TMP = '/tmp/results.json';
  */
 const DEFAULT_CONFIG: Partial<Config> = {
     cache: false,
+    CI: true,
 };
 
 // prettier-ignore

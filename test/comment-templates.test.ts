@@ -126,15 +126,15 @@ describe('ERROR_TEMPLATE', () => {
             \`\`\`
             Error: mock error
                 at Object.<anonymous> (<removed>/test/utils.ts:2:26)
-                at Runtime._execModule (<removed>/node_modules/jest-runtime/build/index.js:1299:24)
-                at Runtime._loadModule (<removed>/node_modules/jest-runtime/build/index.js:898:12)
-                at Runtime.requireModule (<removed>/node_modules/jest-runtime/build/index.js:746:10)
-                at Runtime.requireModuleOrMock (<removed>/node_modules/jest-runtime/build/index.js:919:21)
+                at Runtime._execModule (<removed>/node_modules/jest-runtime/build/index.js:867:68)
+                at Runtime._loadModule (<removed>/node_modules/jest-runtime/build/index.js:577:12)
+                at Runtime.requireModule (<removed>/node_modules/jest-runtime/build/index.js:433:10)
+                at Runtime.requireModuleOrMock (<removed>/node_modules/jest-runtime/build/index.js:598:21)
                 at Object.<anonymous> (<removed>/test/comment-templates.test.ts:4:1)
-                at Runtime._execModule (<removed>/node_modules/jest-runtime/build/index.js:1299:24)
-                at Runtime._loadModule (<removed>/node_modules/jest-runtime/build/index.js:898:12)
-                at Runtime.requireModule (<removed>/node_modules/jest-runtime/build/index.js:746:10)
-                at jasmine2 (<removed>/node_modules/jest-jasmine2/build/index.js:230:13)
+                at Runtime._execModule (<removed>/node_modules/jest-runtime/build/index.js:867:68)
+                at Runtime._loadModule (<removed>/node_modules/jest-runtime/build/index.js:577:12)
+                at Runtime.requireModule (<removed>/node_modules/jest-runtime/build/index.js:433:10)
+                at <removed>/node_modules/jest-jasmine2/build/index.js:202:13
             \`\`\`
 
             </details>

@@ -2,7 +2,7 @@ name: CI
 
 on:
   pull_request:
-    types: [ opened, synchronize ]
+    types: [opened, synchronize]
   push:
 
 jobs:
@@ -11,4 +11,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: yarn install
+      - run: yarn build
       - run: yarn test

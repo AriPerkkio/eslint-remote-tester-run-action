@@ -34,7 +34,7 @@ on:
         - cron: '0 00 * * THU'
 
 jobs:
-    compare:
+    test:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
@@ -58,5 +58,5 @@ jobs:
 | `github-token`                                                                                                                                                                           | Token for Github Authentication. See [About the `GITHUB_TOKEN` secret](https://docs.github.com/en/actions/reference/authentication-in-a-workflow#about-the-github_token-secret). |   :x:    |              `${{github.token}}`               | `${{secrets.SOME_CUSTOM_TOKEN}}`           |
 | `issue-title`                                                                                                                                                                            | Title of issue created for reporting results                                                                                                                                     |   :x:    | `'Results of eslint-remote-tester-run-action'` | `'Results of weekly scheduled smoke test'` |
 | `eslint-remote-tester-config`                                                                                                                                                            | Path to project's `eslint-remote-tester.config.js`                                                                                                                               |   :x:    |       `'eslint-remote-tester.config.js'`       | `./path/to/custom.config.js`               |
-| `max-result-count`                                                                                                                                                                       | Maximum result count to be posted in result comment. Can be override with `maxResultCount` option in comment.                                                                    |   :x:    |                      `50`                      | `100`                                      |
+| `max-result-count`                                                                                                                                                                       | Maximum result count to be posted in result comment.                                                                                                                             |   :x:    |                      `50`                      | `100`                                      |
 | `working-directory`                                                                                                                                                                      | The working directory where action is run                                                                                                                                        |   :x:    |                      :x:                       | `./ci`                                     |

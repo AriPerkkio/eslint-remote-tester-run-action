@@ -8,7 +8,7 @@ import {
     ESLINT_REMOTE_TESTER_BIN,
 } from './peer-dependencies';
 
-const INTERNAL_CONFIG = './eslint-remote-tester-compare-internal.config.js';
+const INTERNAL_CONFIG = './eslint-remote-tester-runner-internal.config.js';
 export const RESULTS_TMP = '/tmp/results.json';
 
 /**

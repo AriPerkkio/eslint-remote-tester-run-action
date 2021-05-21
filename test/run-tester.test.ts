@@ -7,7 +7,7 @@ import { ESLINT_REMOTE_TESTER_BIN } from '../src/peer-dependencies';
 import { sanitizeStackTrace } from './utils';
 import { Config } from 'eslint-remote-tester/dist/exports-for-compare-action';
 
-const EXPECTED_RUN_CONFIG = './eslint-remote-tester-compare-internal.config.js';
+const EXPECTED_RUN_CONFIG = './eslint-remote-tester-runner-internal.config.js';
 const CONFIG = './test/eslint-remote-tester.config.js';
 const INVALID_CONFIG = './test/eslint-remote-tester.invalid.config.js';
 const CONFIG_WITH_ON_COMPLETE =

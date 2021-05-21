@@ -23,6 +23,7 @@ ${error.stack}
  */
 export const COMMENT_TEMPLATE = (
     results: Result[],
+    repositoryCount: number | undefined,
     maxResultCount: number
 ): string => {
     const { RESULT_PARSER_TO_COMPARE_TEMPLATE } = requirePeerDependency(
@@ -35,7 +36,8 @@ export const COMMENT_TEMPLATE = (
 
     // prettier-ignore
     return '' +
-`Detected ${results.length} ESLint reports and/or crashes.
+`Detected ${results.length} ESLint reports and/or crashes. ${repositoryCount ? `
+Scanned ${repositoryCount} repositories.` : ''}
 ${limitReached ?
 `
 Reached maximum result count ${maxResultCount}.

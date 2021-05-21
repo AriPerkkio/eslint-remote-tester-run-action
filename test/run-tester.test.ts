@@ -63,12 +63,12 @@ describe('run-tester', () => {
 
         expect(sanitizeStackTrace(readRunConfig().onComplete!.toString()))
             .toMatchInlineSnapshot(`
-            "async function onComplete(results, comparisonResults) {
+            "async function onComplete(results, comparisonResults, repositoryCount) {
                     // Write results to cache
-                    fs.writeFileSync('/tmp/results.json', JSON.stringify(results || []));
+                    fs.writeFileSync('/tmp/results.json', JSON.stringify({ results, repositoryCount }));
 
                     if(usersConfig.onComplete) {
-                        await usersConfig.onComplete(results, comparisonResults);
+                        await usersConfig.onComplete(results, comparisonResults, repositoryCount);
                     }
                 }"
         `);

@@ -22,11 +22,13 @@ describe('COMMENT_TEMPLATE', () => {
     test('results are shown in details', () => {
         const comment = COMMENT_TEMPLATE(
             [generateResult(1), generateResult(2)],
+            152,
             10
         );
 
         expect(comment).toMatchInlineSnapshot(`
-            "Detected 2 ESLint reports and/or crashes.
+            "Detected 2 ESLint reports and/or crashes. 
+            Scanned 152 repositories.
 
             <details>
                 <summary>Click to expand</summary>
@@ -67,11 +69,62 @@ describe('COMMENT_TEMPLATE', () => {
     test('results are limited based on maxResultCount', () => {
         const comment = COMMENT_TEMPLATE(
             [generateResult(1), generateResult(2), generateResult(3)],
+            1421,
             2
         );
 
         expect(comment).toMatchInlineSnapshot(`
-            "Detected 3 ESLint reports and/or crashes.
+            "Detected 3 ESLint reports and/or crashes. 
+            Scanned 1421 repositories.
+
+            Reached maximum result count 2.
+            Showing 2/3
+
+            <details>
+                <summary>Click to expand</summary>
+
+            ## Rule: rule-1
+
+            -   Message: \`message-1\`
+            -   Path: \`path-1\`
+            -   [Link](link-1)
+
+            \`\`\`extension-1
+            source-1
+            \`\`\`
+
+            \`\`\`
+            error-1
+            \`\`\`
+
+            ## Rule: rule-2
+
+            -   Message: \`message-2\`
+            -   Path: \`path-2\`
+            -   [Link](link-2)
+
+            \`\`\`extension-2
+            source-2
+            \`\`\`
+
+            \`\`\`
+            error-2
+            \`\`\`
+
+            </details>
+            "
+        `);
+    });
+
+    test("count of scanned repositories is not added when it's unavailable", () => {
+        const comment = COMMENT_TEMPLATE(
+            [generateResult(1), generateResult(2), generateResult(3)],
+            undefined,
+            2
+        );
+
+        expect(comment).toMatchInlineSnapshot(`
+            "Detected 3 ESLint reports and/or crashes. 
 
             Reached maximum result count 2.
             Showing 2/3

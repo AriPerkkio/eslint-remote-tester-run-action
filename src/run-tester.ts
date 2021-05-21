@@ -35,12 +35,12 @@ module.exports = {
     // Values from eslint-remote-tester-run-action's default configuration
     ...${JSON.stringify(DEFAULT_CONFIG, null, 4)},
 
-    onComplete: async function onComplete(results, comparisonResults) {
+    onComplete: async function onComplete(results, comparisonResults, repositoryCount) {
         // Write results to cache
-        fs.writeFileSync('${RESULTS_TMP}', JSON.stringify(results || []));
+        fs.writeFileSync('${RESULTS_TMP}', JSON.stringify({ results, repositoryCount }));
 
         if(usersConfig.onComplete) {
-            await usersConfig.onComplete(results, comparisonResults);
+            await usersConfig.onComplete(results, comparisonResults, repositoryCount);
         }
     }
 };

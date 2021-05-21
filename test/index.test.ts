@@ -14,7 +14,11 @@ const mockCore = {
 jest.mock('@actions/core', () => mockCore);
 
 const mockFs = {
-    readFileSync: jest.fn().mockReturnValue('[{"id": 1}, {"id": 2}]'),
+    readFileSync: jest
+        .fn()
+        .mockReturnValue(
+            '{ "results": [{"id": 1}, {"id": 2}], "repositoryCount": 1502 }'
+        ),
 };
 jest.mock('fs', () => mockFs);
 
@@ -74,6 +78,7 @@ describe('entrypoint', () => {
         );
         expect(mockCommentTemplate).toHaveBeenCalledWith(
             [{ id: 1 }, { id: 2 }],
+            1502,
             999
         );
     });

@@ -7,6 +7,11 @@ import runTester, { RESULTS_TMP } from './run-tester';
 import { COMMENT_TEMPLATE, ERROR_TEMPLATE } from './comment-templates';
 import { Result } from 'eslint-remote-tester/dist/exports-for-compare-action';
 
+type TestResults = {
+    results: Result[] | undefined;
+    repositoryCount: number | undefined;
+};
+
 async function run() {
     try {
         const eslintRemoteTesterConfig = core.getInput(
@@ -25,8 +30,11 @@ async function run() {
         );
 
         const resultCount = await core.group('Posting results', async () => {
-            const comparisonResults = fs.readFileSync(RESULTS_TMP, 'utf8');
-            const results: Result[] = JSON.parse(comparisonResults);
+            const testResults: TestResults = JSON.parse(
+                // TODO: Handle cases where temp file doesn't exists, e.g. scan was erroneous
+                fs.readFileSync(RESULTS_TMP, 'utf8')
+            );
+            const results = testResults.results || [];
 
             if (results.length === 0) {
                 core.info('Skipping result posting due to 0 results');
@@ -35,6 +43,7 @@ async function run() {
 
             const resultsComment = COMMENT_TEMPLATE(
                 results,
+                testResults.repositoryCount,
                 parseInt(maxResultCount)
             );
 

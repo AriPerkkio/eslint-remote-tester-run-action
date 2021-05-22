@@ -5871,12 +5871,12 @@ module.exports = {
     // Values from eslint-remote-tester-run-action's default configuration
     ...${JSON.stringify(DEFAULT_CONFIG, null, 4)},
 
-    onComplete: async function onComplete(results, comparisonResults) {
+    onComplete: async function onComplete(results, comparisonResults, repositoryCount) {
         // Write results to cache
-        fs.writeFileSync('${RESULTS_TMP}', JSON.stringify(results || []));
+        fs.writeFileSync('${RESULTS_TMP}', JSON.stringify({ results, repositoryCount }));
 
         if(usersConfig.onComplete) {
-            await usersConfig.onComplete(results, comparisonResults);
+            await usersConfig.onComplete(results, comparisonResults, repositoryCount);
         }
     }
 };
@@ -5916,12 +5916,13 @@ ${error2.stack}
 
 </details>
 `;
-var COMMENT_TEMPLATE = (results, maxResultCount) => {
+var COMMENT_TEMPLATE = (results, repositoryCount, maxResultCount) => {
   const {RESULT_PARSER_TO_COMPARE_TEMPLATE} = requirePeerDependency("eslint-remote-tester");
   const template = RESULT_PARSER_TO_COMPARE_TEMPLATE.markdown.results;
   const limitReached = results.length > maxResultCount;
   const limitedResults = results.slice(0, maxResultCount);
-  return `Detected ${results.length} ESLint reports and/or crashes.
+  return `Detected ${results.length} ESLint reports and/or crashes. ${repositoryCount ? `
+Scanned ${repositoryCount} repositories.` : ""}
 ${limitReached ? `
 Reached maximum result count ${maxResultCount}.
 Showing ${limitedResults.length}/${results.length}
@@ -5945,13 +5946,13 @@ async function run() {
     }
     await core3.group("Running eslint-remote-tester", () => runTester(eslintRemoteTesterConfig));
     const resultCount = await core3.group("Posting results", async () => {
-      const comparisonResults = import_fs2.default.readFileSync(RESULTS_TMP, "utf8");
-      const results = JSON.parse(comparisonResults);
+      const testResults = JSON.parse(import_fs2.default.readFileSync(RESULTS_TMP, "utf8"));
+      const results = testResults.results || [];
       if (results.length === 0) {
         core3.info("Skipping result posting due to 0 results");
         return results.length;
       }
-      const resultsComment = COMMENT_TEMPLATE(results, parseInt(maxResultCount));
+      const resultsComment = COMMENT_TEMPLATE(results, testResults.repositoryCount, parseInt(maxResultCount));
       await github_client_default.postResults(resultsComment);
       return results.length;
     });

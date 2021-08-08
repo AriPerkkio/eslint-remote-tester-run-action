@@ -2,7 +2,7 @@
 
 > Github action for running eslint-remote-tester and receiving results in Github issue
 
-[Requirements](#requirements) | [Configuration](#configuration)
+[Requirements](#requirements) | [Configuration](#configuration) | [Publishing new release](#publishing-new-release)
 
 `eslint-remote-tester-run-action` is a pre-configured Github workflow action for running [`eslint-remote-tester`](https://github.com/AriPerkkio/eslint-remote-tester).
 It runs `eslint-remote-tester` and posts results in Github issue. Results are commented on existing open issue if present.
@@ -60,3 +60,16 @@ jobs:
 | `eslint-remote-tester-config`                                                                                                                                                            | Path to project's `eslint-remote-tester.config.js`                                                                                                                               |   :x:    |       `'eslint-remote-tester.config.js'`       | `./path/to/custom.config.js`               |
 | `max-result-count`                                                                                                                                                                       | Maximum result count to be posted in result comment.                                                                                                                             |   :x:    |                      `50`                      | `100`                                      |
 | `working-directory`                                                                                                                                                                      | The working directory where action is run                                                                                                                                        |   :x:    |                      :x:                       | `./ci`                                     |
+
+## Publishing new release
+
+Follow guidelines from [actions/toolkit: action-versioning](https://github.com/actions/toolkit/blob/main/docs/action-versioning.md#recommendations).
+
+Make sure to manually update git tag for patch and fix versions.
+
+> 3. **Make the new release available to those binding to the major version tag**: Move the major version tag (v1, v2, etc.) to point to the ref of the current release. This will > act as the stable release for that major version. You should keep this tag updated to the most recent stable minor/patch release.
+>
+> ```
+> git tag -fa v1 -m "Update v1 tag"
+> git push origin v1 --force
+> ```

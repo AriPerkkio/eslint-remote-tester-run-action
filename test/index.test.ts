@@ -48,6 +48,8 @@ async function runEntryPoint() {
 describe('entrypoint', () => {
     beforeEach(() => {
         mockCore.setFailed.mockClear();
+        mockCore.info.mockClear();
+
         mockGithubClient.postResults.mockClear();
         mockGithubClient.postResults.mockResolvedValue(undefined);
     });
@@ -99,6 +101,12 @@ describe('entrypoint', () => {
         await runEntryPoint();
 
         expect(mockCore.setFailed).toHaveBeenCalledWith('Found 2 results');
+    });
+
+    test('logs count of scanned repositories', async () => {
+        await runEntryPoint();
+
+        expect(mockCore.info).toHaveBeenCalledWith('Scanned 1502 repositories');
     });
 
     test('skips result posting when there are 0 results', async () => {

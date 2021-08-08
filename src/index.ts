@@ -34,6 +34,9 @@ async function run() {
                 // TODO: Handle cases where temp file doesn't exists, e.g. scan was erroneous
                 fs.readFileSync(RESULTS_TMP, 'utf8')
             );
+
+            core.info(`Scanned ${testResults.repositoryCount} repositories`);
+
             const results = testResults.results || [];
 
             if (results.length === 0) {

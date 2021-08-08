@@ -5905,6 +5905,8 @@ async function runTester(configLocation) {
 }
 
 // src/comment-templates.ts
+var filterUniqueTruthy = (item, index, array) => item != null && array.indexOf(item) === index;
+var formatRule = (rule) => "\n-   `" + rule + "`";
 var ERROR_TEMPLATE = (error2) => `Something went wrong.
 
 <details>
@@ -5921,12 +5923,15 @@ var COMMENT_TEMPLATE = (results, repositoryCount, maxResultCount) => {
   const template = RESULT_PARSER_TO_COMPARE_TEMPLATE.markdown.results;
   const limitReached = results.length > maxResultCount;
   const limitedResults = results.slice(0, maxResultCount);
+  const rules = results.map((result) => result.rule).filter(filterUniqueTruthy);
   return `Detected ${results.length} ESLint reports and/or crashes. ${repositoryCount ? `
 Scanned ${repositoryCount} repositories.` : ""}
 ${limitReached ? `
 Reached maximum result count ${maxResultCount}.
 Showing ${limitedResults.length}/${results.length}
 ` : ""}
+Rules:${rules.map(formatRule).join("")}
+
 <details>
     <summary>Click to expand</summary>
 

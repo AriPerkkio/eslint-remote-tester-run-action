@@ -5947,6 +5947,7 @@ async function run() {
     await core3.group("Running eslint-remote-tester", () => runTester(eslintRemoteTesterConfig));
     const resultCount = await core3.group("Posting results", async () => {
       const testResults = JSON.parse(import_fs2.default.readFileSync(RESULTS_TMP, "utf8"));
+      core3.info(`Scanned ${testResults.repositoryCount} repositories`);
       const results = testResults.results || [];
       if (results.length === 0) {
         core3.info("Skipping result posting due to 0 results");

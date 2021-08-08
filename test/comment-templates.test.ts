@@ -30,6 +30,10 @@ describe('COMMENT_TEMPLATE', () => {
             "Detected 2 ESLint reports and/or crashes. 
             Scanned 152 repositories.
 
+            Rules:
+            -   \`rule-1\`
+            -   \`rule-2\`
+
             <details>
                 <summary>Click to expand</summary>
 
@@ -80,6 +84,11 @@ describe('COMMENT_TEMPLATE', () => {
             Reached maximum result count 2.
             Showing 2/3
 
+            Rules:
+            -   \`rule-1\`
+            -   \`rule-2\`
+            -   \`rule-3\`
+
             <details>
                 <summary>Click to expand</summary>
 
@@ -128,6 +137,11 @@ describe('COMMENT_TEMPLATE', () => {
 
             Reached maximum result count 2.
             Showing 2/3
+
+            Rules:
+            -   \`rule-1\`
+            -   \`rule-2\`
+            -   \`rule-3\`
 
             <details>
                 <summary>Click to expand</summary>

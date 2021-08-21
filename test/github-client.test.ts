@@ -42,7 +42,7 @@ describe('github-client', () => {
         expect(onIssueCreated).not.toHaveBeenCalled();
     });
 
-    test('should recover from errors', async () => {
+    test('should recover from 5x API errors', async () => {
         // Request should fail 5 times
         mockApiError.mockReturnValueOnce(true);
         mockApiError.mockReturnValueOnce(true);
@@ -62,5 +62,20 @@ describe('github-client', () => {
                 title: 'mock-issue-title',
             },
         });
+    });
+
+    test('should fail request after 6x failures', async () => {
+        mockApiError.mockReturnValueOnce(true);
+        mockApiError.mockReturnValueOnce(true);
+        mockApiError.mockReturnValueOnce(true);
+        mockApiError.mockReturnValueOnce(true);
+        mockApiError.mockReturnValueOnce(true);
+        mockApiError.mockReturnValueOnce(true);
+
+        mockNoExistingIssues.mockReturnValueOnce(true);
+
+        await expect(
+            GithubClient.postResults(body)
+        ).rejects.toMatchInlineSnapshot(`[HttpError]`);
     });
 });

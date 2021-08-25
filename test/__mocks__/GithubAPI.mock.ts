@@ -1,8 +1,9 @@
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
-const API_URL = 'https://api.github.com';
+export const API_URL = 'https://api.github.com';
 export const mockNoExistingIssues = jest.fn().mockReturnValue(false);
+export const mockApiError = jest.fn().mockReturnValue(false);
 export const onComment = jest.fn();
 export const onIssueCreated = jest.fn();
 export const expectedIssueNumber = 999;
@@ -27,6 +28,10 @@ export default setupServer(
             order !== 'desc'
         ) {
             return res(ctx.status(404));
+        }
+
+        if (mockApiError()) {
+            return res(ctx.status(500));
         }
 
         return res(

@@ -5771,7 +5771,18 @@ try {
 }
 var GithubClient = class {
   constructor() {
+    this.MAX_RETRIES = 5;
     this.octokit = import_github.getOctokit(githubToken);
+  }
+  async requestAndRetry(request) {
+    for (let retryCount = 1; retryCount <= this.MAX_RETRIES; retryCount++) {
+      try {
+        return await request();
+      } catch (error2) {
+        core.info(`Request failed. Retrying ${retryCount}/${this.MAX_RETRIES}.`);
+      }
+    }
+    return await request();
   }
   async postResults(body) {
     const existingIssue = await this.getExistingIssue();
@@ -5780,15 +5791,15 @@ var GithubClient = class {
       return this.createIssue(body);
     }
     core.info(`Reusing existing issue #${existingIssue}`);
-    await this.octokit.issues.createComment({
+    await this.requestAndRetry(() => this.octokit.issues.createComment({
       owner: import_github.context.repo.owner,
       repo: import_github.context.repo.repo,
       issue_number: existingIssue,
       body
-    });
+    }));
   }
   async getExistingIssue() {
-    const response = await this.octokit.search.issuesAndPullRequests({
+    const response = await this.requestAndRetry(() => this.octokit.search.issuesAndPullRequests({
       sort: "created",
       order: "desc",
       q: [
@@ -5797,19 +5808,19 @@ var GithubClient = class {
         "is:open",
         `repo:${import_github.context.repo.owner}/${import_github.context.repo.repo}`
       ].join(" ")
-    });
+    }));
     const {items} = response.data;
     core.info(`Found ${items.length} open issues with title ${issueTitle}`);
     const issue = items.find((a) => a.title === issueTitle);
     return issue ? issue.number : void 0;
   }
   async createIssue(body) {
-    await this.octokit.issues.create({
+    await this.requestAndRetry(() => this.octokit.issues.create({
       owner: import_github.context.repo.owner,
       repo: import_github.context.repo.repo,
       title: issueTitle,
       body
-    });
+    }));
   }
 };
 var github_client_default = new GithubClient();

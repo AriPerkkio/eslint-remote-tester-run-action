@@ -20,6 +20,7 @@ Check out the use case description from eslint-remote-tester's documentation: [P
 | eslint-remote-tester-run-action | eslint-remote-tester |
 | :-----------------------------: | :------------------: |
 |              `v1`               |   `1.0.1` or above   |
+|              `v2`               |   `1.0.1` or above   |
 
 ## Configuration:
 
@@ -40,11 +41,11 @@ jobs:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v2
               with:
-                  node-version: 14
+                  node-version: 16
             - run: npm install
             - run: npm link
             - run: npm link eslint-plugin-custom
-            - uses: AriPerkkio/eslint-remote-tester-run-action@v1
+            - uses: AriPerkkio/eslint-remote-tester-run-action@v2
               with:
                   issue-title: 'Results of weekly scheduled smoke test'
                   max-result-count: 100

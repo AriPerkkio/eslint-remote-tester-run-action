@@ -17,10 +17,24 @@ function times(count: number) {
     };
 }
 
+async function waitFor(isDone: () => boolean | void): Promise<void> {
+    try {
+        if (isDone() !== false) return;
+    } catch (_) {
+        // Simply ignore error
+    }
+
+    await new Promise(resolve => setImmediate(resolve));
+    jest.runOnlyPendingTimers();
+
+    return waitFor(isDone);
+}
+
 describe('github-client', () => {
     beforeEach(() => {
         onIssueCreated.mockClear();
         onComment.mockClear();
+        mockApiError.mockClear();
     });
 
     test('postResults creates new issue when no matching issue exists', async () => {
@@ -53,10 +67,13 @@ describe('github-client', () => {
     test('should recover from 5x API errors', async () => {
         // Request should fail 5 times
         times(5)(() => mockApiError.mockReturnValueOnce(true));
-
         mockNoExistingIssues.mockReturnValueOnce(true);
 
-        await GithubClient.postResults(body);
+        jest.useFakeTimers();
+        GithubClient.postResults(body);
+
+        await waitFor(() => expect(onIssueCreated).toHaveBeenCalled());
+        jest.useRealTimers();
 
         expect(onIssueCreated).toHaveBeenCalledWith({
             owner: 'mock-owner',
@@ -72,8 +89,12 @@ describe('github-client', () => {
         times(6)(() => mockApiError.mockReturnValueOnce(true));
         mockNoExistingIssues.mockReturnValueOnce(true);
 
-        await expect(
-            GithubClient.postResults(body)
-        ).rejects.toMatchInlineSnapshot(`[HttpError]`);
+        jest.useFakeTimers();
+        const request = GithubClient.postResults(body);
+
+        await waitFor(() => expect(mockApiError).toHaveBeenCalledTimes(6));
+        jest.useRealTimers();
+
+        await expect(request).rejects.toMatchInlineSnapshot(`[HttpError]`);
     });
 });

@@ -9,6 +9,14 @@ import {
 
 const body = 'mock-comment-body';
 
+function times(count: number) {
+    return function wrapper(method: () => void) {
+        Array(Math.floor(count))
+            .fill(null)
+            .forEach(() => method());
+    };
+}
+
 describe('github-client', () => {
     beforeEach(() => {
         onIssueCreated.mockClear();
@@ -44,11 +52,7 @@ describe('github-client', () => {
 
     test('should recover from 5x API errors', async () => {
         // Request should fail 5 times
-        mockApiError.mockReturnValueOnce(true);
-        mockApiError.mockReturnValueOnce(true);
-        mockApiError.mockReturnValueOnce(true);
-        mockApiError.mockReturnValueOnce(true);
-        mockApiError.mockReturnValueOnce(true);
+        times(5)(() => mockApiError.mockReturnValueOnce(true));
 
         mockNoExistingIssues.mockReturnValueOnce(true);
 
@@ -65,13 +69,7 @@ describe('github-client', () => {
     });
 
     test('should fail request after 6x failures', async () => {
-        mockApiError.mockReturnValueOnce(true);
-        mockApiError.mockReturnValueOnce(true);
-        mockApiError.mockReturnValueOnce(true);
-        mockApiError.mockReturnValueOnce(true);
-        mockApiError.mockReturnValueOnce(true);
-        mockApiError.mockReturnValueOnce(true);
-
+        times(6)(() => mockApiError.mockReturnValueOnce(true));
         mockNoExistingIssues.mockReturnValueOnce(true);
 
         await expect(

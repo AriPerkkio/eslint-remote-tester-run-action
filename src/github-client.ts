@@ -33,6 +33,7 @@ class GithubClient {
                 core.info(
                     `Request failed. Retrying ${retryCount}/${this.MAX_RETRIES}.`
                 );
+                await sleep(5000);
             }
         }
 
@@ -95,6 +96,10 @@ class GithubClient {
             })
         );
     }
+}
+
+async function sleep(timeMs: number): Promise<void> {
+    await new Promise(resolve => setTimeout(resolve, timeMs));
 }
 
 export default new GithubClient();

@@ -5780,6 +5780,7 @@ var GithubClient = class {
         return await request();
       } catch (error2) {
         core.info(`Request failed. Retrying ${retryCount}/${this.MAX_RETRIES}.`);
+        await sleep(5e3);
       }
     }
     return await request();
@@ -5823,6 +5824,9 @@ var GithubClient = class {
     }));
   }
 };
+async function sleep(timeMs) {
+  await new Promise((resolve) => setTimeout(resolve, timeMs));
+}
 var github_client_default = new GithubClient();
 
 // src/run-tester.ts

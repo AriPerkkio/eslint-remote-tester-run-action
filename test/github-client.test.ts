@@ -64,9 +64,9 @@ describe('github-client', () => {
         expect(onIssueCreated).not.toHaveBeenCalled();
     });
 
-    test('should recover from 5x API errors', async () => {
-        // Request should fail 5 times
-        times(5)(() => mockApiError.mockReturnValueOnce(true));
+    test('should recover from 30x API errors', async () => {
+        // Request should fail 30 times
+        times(30)(() => mockApiError.mockReturnValueOnce(true));
         mockNoExistingIssues.mockReturnValueOnce(true);
 
         jest.useFakeTimers();
@@ -85,14 +85,14 @@ describe('github-client', () => {
         });
     });
 
-    test('should fail request after 6x failures', async () => {
-        times(6)(() => mockApiError.mockReturnValueOnce(true));
+    test('should fail request after 31x failures', async () => {
+        times(31)(() => mockApiError.mockReturnValueOnce(true));
         mockNoExistingIssues.mockReturnValueOnce(true);
 
         jest.useFakeTimers();
         const request = GithubClient.postResults(body);
 
-        await waitFor(() => expect(mockApiError).toHaveBeenCalledTimes(6));
+        await waitFor(() => expect(mockApiError).toHaveBeenCalledTimes(31));
         jest.useRealTimers();
 
         await expect(request).rejects.toMatchInlineSnapshot(`[HttpError]`);

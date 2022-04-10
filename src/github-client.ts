@@ -19,7 +19,10 @@ class GithubClient {
     private octokit: ReturnType<typeof getOctokit>;
 
     /** Indicates how many times failed request is retried */
-    private MAX_RETRIES = 5;
+    private MAX_RETRIES = 30;
+
+    /** Indicates how many seconds should be waited before failed request is retried */
+    private RETRY_SEEP_TIME_MS = 10000;
 
     constructor() {
         this.octokit = getOctokit(githubToken);
@@ -33,7 +36,7 @@ class GithubClient {
                 core.info(
                     `Request failed. Retrying ${retryCount}/${this.MAX_RETRIES}.`
                 );
-                await sleep(5000);
+                await sleep(this.RETRY_SEEP_TIME_MS);
             }
         }
 

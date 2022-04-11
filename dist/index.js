@@ -5771,7 +5771,8 @@ try {
 }
 var GithubClient = class {
   constructor() {
-    this.MAX_RETRIES = 5;
+    this.MAX_RETRIES = 30;
+    this.RETRY_SEEP_TIME_MS = 1e4;
     this.octokit = import_github.getOctokit(githubToken);
   }
   async requestAndRetry(request) {
@@ -5780,7 +5781,7 @@ var GithubClient = class {
         return await request();
       } catch (error2) {
         core.info(`Request failed. Retrying ${retryCount}/${this.MAX_RETRIES}.`);
-        await sleep(5e3);
+        await sleep(this.RETRY_SEEP_TIME_MS);
       }
     }
     return await request();

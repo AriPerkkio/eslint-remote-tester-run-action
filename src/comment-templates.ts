@@ -1,6 +1,9 @@
 import { Result } from 'eslint-remote-tester/dist/exports-for-compare-action';
 import { requirePeerDependency } from './peer-dependencies';
 
+// Github API limits body length to 65536. Let's leave some paddings just to be sure.
+const RESULTS_MAX_LENGH = 62000;
+
 const filterUniqueTruthy = <T>(item: T, index: number, array: T[]) =>
     item != null && array.indexOf(item) === index;
 
@@ -11,7 +14,7 @@ const formatRule = (rule: string | null) => '\n-   `' + rule + '`';
  * Template for building github issue comment when action run into error
  */
 export const ERROR_TEMPLATE = (error: Error): string =>
-`Something went wrong.
+`Something went wrong. This is likely an internal error of \`eslint-remote-tester-run-action\`.
 
 <details>
     <summary>Click to expand</summary>
@@ -55,7 +58,7 @@ Rules:${rules.filter(Boolean).map(formatRule).join('')}
 <details>
     <summary>Click to expand</summary>
 
-${limitedResults.map(template).join('\n')}
+${limitedResults.map(template).join('\n').slice(0, RESULTS_MAX_LENGH)}
 </details>
 `;
 };

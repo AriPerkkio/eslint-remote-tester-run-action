@@ -8,6 +8,13 @@ export const onComment = jest.fn();
 export const onIssueCreated = jest.fn();
 export const expectedIssueNumber = 999;
 
+const ERROR_BODY_MAX_LENGTH = {
+    resource: 'Issue',
+    code: 'custom',
+    field: 'body',
+    message: 'body is too long (maximum is 65536 characters)',
+} as const;
+
 export default setupServer(
     rest.get(`${API_URL}/search/issues`, (req, res, ctx) => {
         const q = req.url.searchParams.get('q');
@@ -52,6 +59,10 @@ export default setupServer(
             const { owner, repo, issueNumber } = req.params;
             const body = req.body;
 
+            if (body?.length > 65536) {
+                return res(ctx.json(ERROR_BODY_MAX_LENGTH), ctx.status(400));
+            }
+
             // Void endpoint tested via additional assertion
             onComment({ owner, repo, issueNumber, body });
 
@@ -61,6 +72,10 @@ export default setupServer(
     rest.post(`${API_URL}/repos/:owner/:repo/issues`, (req, res, ctx) => {
         const { owner, repo, title } = req.params;
         const body = req.body;
+
+        if (body?.length > 65536) {
+            return res(ctx.json(ERROR_BODY_MAX_LENGTH), ctx.status(400));
+        }
 
         // Void endpoint tested via additional assertion
         onIssueCreated({ owner, repo, title, body });

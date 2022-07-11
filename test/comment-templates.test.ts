@@ -178,6 +178,21 @@ describe('COMMENT_TEMPLATE', () => {
             "
         `);
     });
+
+    test('length of results are limited below 65K characters', () => {
+        const results = [
+            generateResult(1),
+            generateResult(2),
+            generateResult(3),
+        ].map(result => ({
+            ...result,
+            error: 'Extremely long stacktrace'.repeat(10000),
+        }));
+
+        const comment = COMMENT_TEMPLATE(results, 3, 50);
+
+        expect(comment.length).toBeLessThan(65000);
+    });
 });
 
 describe('ERROR_TEMPLATE', () => {
@@ -185,7 +200,7 @@ describe('ERROR_TEMPLATE', () => {
         const comment = ERROR_TEMPLATE(mockError);
 
         expect(comment).toMatchInlineSnapshot(`
-            "Something went wrong.
+            "Something went wrong. This is likely an internal error of \`eslint-remote-tester-run-action\`.
 
             <details>
                 <summary>Click to expand</summary>

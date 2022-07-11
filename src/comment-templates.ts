@@ -50,7 +50,7 @@ ${limitReached ?
 Reached maximum result count ${maxResultCount}.
 Showing ${limitedResults.length}/${results.length}
 ` : ''}
-Rules:${rules.map(formatRule).join('')}
+Rules:${rules.filter(Boolean).map(formatRule).join('')}
 
 <details>
     <summary>Click to expand</summary>

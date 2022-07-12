@@ -5940,9 +5940,10 @@ async function runTester(configLocation) {
 }
 
 // src/comment-templates.ts
+var RESULTS_MAX_LENGH = 62e3;
 var filterUniqueTruthy = (item, index, array) => item != null && array.indexOf(item) === index;
 var formatRule = (rule) => "\n-   `" + rule + "`";
-var ERROR_TEMPLATE = (error2) => `Something went wrong.
+var ERROR_TEMPLATE = (error2) => `Something went wrong. This is likely an internal error of \`eslint-remote-tester-run-action\`.
 
 <details>
     <summary>Click to expand</summary>
@@ -5965,12 +5966,12 @@ ${limitReached ? `
 Reached maximum result count ${maxResultCount}.
 Showing ${limitedResults.length}/${results.length}
 ` : ""}
-Rules:${rules.map(formatRule).join("")}
+Rules:${rules.filter(Boolean).map(formatRule).join("")}
 
 <details>
     <summary>Click to expand</summary>
 
-${limitedResults.map(template).join("\n")}
+${limitedResults.map(template).join("\n").slice(0, RESULTS_MAX_LENGH)}
 </details>
 `;
 };

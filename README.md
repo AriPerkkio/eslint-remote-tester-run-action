@@ -22,6 +22,7 @@ Check out the use case description from eslint-remote-tester's documentation: [P
 |              `v1`               |   `1.0.1` or above   |
 |              `v2`               |   `1.0.1` or above   |
 |              `v3`               |   `2.1.1` or above   |
+|              `v4`               |   `2.1.1` or above   |
 
 ## Configuration:
 
@@ -42,7 +43,7 @@ jobs:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v2
               with:
-                  node-version: 16
+                  node-version: 18
             - run: npm install
             - run: npm link
             - run: npm link eslint-plugin-custom

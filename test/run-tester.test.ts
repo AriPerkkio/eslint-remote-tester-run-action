@@ -170,6 +170,12 @@ describe('run-tester', () => {
         expect(readRunConfig('js').CI).toBe(true);
     });
 
+    test('rulesUnderTesting is defaulted to []', async () => {
+        await runTester(CONFIG);
+
+        expect(readRunConfig().rulesUnderTesting).toBe([]);
+    });
+
     test('configuration is validated', () => {
         const consolelog = console.log;
         console.log = jest.fn();

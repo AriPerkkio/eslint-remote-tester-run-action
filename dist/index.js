@@ -5763,9 +5763,11 @@ var core = __toModule(require_core());
 var import_github = __toModule(require_github());
 var githubToken;
 var issueTitle;
+var issueLabel;
 try {
   githubToken = core.getInput("github-token");
   issueTitle = core.getInput("issue-title", {required: true});
+  issueLabel = core.getInput("issue-label");
 } catch (error2) {
   core.setFailed(error2.message);
 }
@@ -5801,19 +5803,20 @@ var GithubClient = class {
     }));
   }
   async getExistingIssue() {
+    const query = issueLabel ? `label:"${issueLabel}"` : `${issueTitle} in:title`;
     const response = await this.requestAndRetry(() => this.octokit.search.issuesAndPullRequests({
       sort: "created",
       order: "desc",
       q: [
-        `${issueTitle} in:title`,
+        query,
         "is:issue",
         "is:open",
         `repo:${import_github.context.repo.owner}/${import_github.context.repo.repo}`
       ].join(" ")
     }));
     const {items} = response.data;
-    core.info(`Found ${items.length} open issues with title ${issueTitle}`);
-    const issue = items.find((a) => a.title === issueTitle);
+    core.info(`Found ${items.length} open issues matcing query (${query})`);
+    const issue = items[0];
     return issue ? issue.number : void 0;
   }
   async createIssue(body) {
@@ -5821,6 +5824,7 @@ var GithubClient = class {
       owner: import_github.context.repo.owner,
       repo: import_github.context.repo.repo,
       title: issueTitle,
+      labels: issueLabel ? [issueLabel] : void 0,
       body
     }));
   }

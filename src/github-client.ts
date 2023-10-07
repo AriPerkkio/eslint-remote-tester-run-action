@@ -3,10 +3,12 @@ import { context, getOctokit } from '@actions/github';
 
 let githubToken: string;
 let issueTitle: string;
+let issueLabel: string | undefined;
 
 try {
     githubToken = core.getInput('github-token');
     issueTitle = core.getInput('issue-title', { required: true });
+    issueLabel = core.getInput('issue-label');
 } catch (error) {
     core.setFailed(error.message);
 }
@@ -68,12 +70,17 @@ class GithubClient {
     }
 
     private async getExistingIssue(): Promise<number | undefined> {
+        // Look for existing issues based on issue label if present. Otherwise use issue title
+        const query = issueLabel
+            ? `label:"${issueLabel}"`
+            : `${issueTitle} in:title`;
+
         const response = await this.requestAndRetry(() =>
             this.octokit.search.issuesAndPullRequests({
                 sort: 'created',
                 order: 'desc',
                 q: [
-                    `${issueTitle} in:title`,
+                    query,
                     'is:issue',
                     'is:open',
                     `repo:${context.repo.owner}/${context.repo.repo}`,
@@ -82,10 +89,10 @@ class GithubClient {
         );
 
         const { items } = response.data;
-        core.info(`Found ${items.length} open issues with title ${issueTitle}`);
+        core.info(`Found ${items.length} open issues matcing query (${query})`);
 
         // In case of many matches use the latest issue
-        const issue = items.find(a => a.title === issueTitle);
+        const issue = items[0];
         return issue ? issue.number : undefined;
     }
 
@@ -95,6 +102,7 @@ class GithubClient {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 title: issueTitle,
+                labels: issueLabel ? [issueLabel] : undefined,
                 body,
             })
         );

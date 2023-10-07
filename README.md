@@ -5,7 +5,8 @@
 [Requirements](#requirements) | [Configuration](#configuration) | [Publishing new release](#publishing-new-release)
 
 `eslint-remote-tester-run-action` is a pre-configured Github workflow action for running [`eslint-remote-tester`](https://github.com/AriPerkkio/eslint-remote-tester).
-It runs `eslint-remote-tester` and posts results in Github issue. Results are commented on existing open issue if present.
+It runs `eslint-remote-tester` and posts results in Github issue.
+Results are commented on existing **open** issue if present. Existing issues are searched based on `issue-label` if present. Otherwise `issue-title` will be used.
 
 Check out the use case description from eslint-remote-tester's documentation: [Plugin maintainer making sure all existing rules do not crash](https://github.com/AriPerkkio/eslint-remote-tester#plugin-maintainer-making-sure-all-existing-rules-do-not-crash).
 
@@ -50,6 +51,7 @@ jobs:
             - uses: AriPerkkio/eslint-remote-tester-run-action@v2
               with:
                   issue-title: 'Results of weekly scheduled smoke test'
+                  issue-label: 'smoke-test'
                   max-result-count: 100
                   eslint-remote-tester-config: test/smoke/eslint-remote-tester.config.js
 ```
@@ -60,6 +62,7 @@ jobs:
 | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------: | :--------------------------------------------: | :----------------------------------------- |
 | `github-token`                                                                                                                                                                           | Token for Github Authentication. See [About the `GITHUB_TOKEN` secret](https://docs.github.com/en/actions/reference/authentication-in-a-workflow#about-the-github_token-secret). |   :x:    |              `${{github.token}}`               | `${{secrets.SOME_CUSTOM_TOKEN}}`           |
 | `issue-title`                                                                                                                                                                            | Title of issue created for reporting results                                                                                                                                     |   :x:    | `'Results of eslint-remote-tester-run-action'` | `'Results of weekly scheduled smoke test'` |
+| `issue-label`                                                                                                                                                                            | Label used on the created issue                                                                                                                                                  |   :x:    |                      :x:                       | `'smoke-test'`                             |
 | `eslint-remote-tester-config`                                                                                                                                                            | Path to project's `eslint-remote-tester.config.js`                                                                                                                               |   :x:    |       `'eslint-remote-tester.config.js'`       | `./path/to/custom.config.js`               |
 | `max-result-count`                                                                                                                                                                       | Maximum result count to be posted in result comment.                                                                                                                             |   :x:    |                      `50`                      | `100`                                      |
 | `working-directory`                                                                                                                                                                      | The working directory where action is run                                                                                                                                        |   :x:    |                      :x:                       | `./ci`                                     |

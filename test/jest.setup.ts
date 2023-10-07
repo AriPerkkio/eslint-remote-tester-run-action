@@ -1,7 +1,11 @@
 import GithubAPI from './__mocks__/GithubAPI.mock';
 
 jest.mock('@actions/core', () => ({
-    getInput: jest.fn().mockImplementation(key => `mock-${key}`),
+    getInput: jest
+        .fn()
+        .mockImplementation(key =>
+            key === 'issue-label' ? undefined : `mock-${key}`
+        ),
     info: jest.fn(),
 }));
 

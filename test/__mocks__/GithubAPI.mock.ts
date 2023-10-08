@@ -47,8 +47,8 @@ export default setupServer(
                 items: mockNoExistingIssues()
                     ? []
                     : [
-                          { title: 'Should not match', number: 1 },
                           { title, number: expectedIssueNumber },
+                          { title: 'Should not match', number: 1 },
                       ],
             })
         );

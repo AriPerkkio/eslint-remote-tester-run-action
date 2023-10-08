@@ -11,6 +11,9 @@ inputs:
     description: 'Title of issue created for reporting results'
     reqired: false
     default: 'Results of eslint-remote-tester-run-action'
+  issue-label:
+    description: 'Label used on the created issue'
+    reqired: false
   eslint-remote-tester-config:
     description: 'Path to eslint-remote-tester.config.js'
     reqired: false

@@ -9,9 +9,19 @@ jobs:
     runs-on: ubuntu-latest
     name: Update dist/index.js
     steps:
-      - uses: actions/checkout@v2
-      - run: yarn install
-      - run: yarn build
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set node version to 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install & Build
+        run: |
+          pnpm install
+          pnpm build
+
       - name: Push updates
         uses: stefanzweifel/git-auto-commit-action@v4
         with:

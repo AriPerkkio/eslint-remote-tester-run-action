@@ -9,8 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Update dist/index.js
     steps:
+      - uses: actions/checkout@v4
+
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v2
 
       - name: Set node version to 20
         uses: actions/setup-node@v4
@@ -25,4 +27,4 @@ jobs:
       - name: Push updates
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "chore(build): update dist/index.js"
+          commit_message: 'chore(build): update dist/index.js'

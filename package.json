@@ -8,6 +8,7 @@
     "bugs": "https://github.com/AriPerkkio/eslint-remote-tester-run-action",
     "author": "Ari Perkkio <ari.perkkio@gmail.com>",
     "license": "MIT",
+    "packageManager": "pnpm@8.15.8",
     "scripts": {
         "prebuild": "rimraf dist && tsc --noEmit",
         "build": "node esbuild.config.js",

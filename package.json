@@ -10,7 +10,7 @@
     "license": "MIT",
     "packageManager": "pnpm@8.15.8",
     "scripts": {
-        "prebuild": "rimraf dist && tsc --noEmit",
+        "prebuild": "rm -rf ./dist",
         "build": "node esbuild.config.js",
         "lint": "eslint --max-warnings=0",
         "typecheck": "tsc --noEmit",
@@ -40,7 +40,6 @@
         "jest": "24",
         "msw": "^0.26.0",
         "prettier": "^2.2.1",
-        "rimraf": "^3.0.2",
         "ts-jest": "24",
         "ts-node": "^10.4.0",
         "typescript": "^4.1.3"

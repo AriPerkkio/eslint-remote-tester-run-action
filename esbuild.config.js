@@ -8,6 +8,12 @@ const options = {
         // Do not bundle eslint-remote-tester. Its modules should be required
         // runtime from users eslint-remote-tester in order to avoid updating action.
         'eslint-remote-tester',
+
+        // Externalize node built-ins
+        'diagnostics_channel',
+        'node:stream',
+        'node:util',
+        'node:events',
     ],
     platform: 'node',
     outdir: 'dist',

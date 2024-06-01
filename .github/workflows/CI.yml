@@ -9,7 +9,23 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: yarn install
-      - run: yarn build
-      - run: yarn test
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+
+      - name: Set node version to 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install & Build
+        run: |
+          pnpm install
+          pnpm build
+
+      - name: Test
+        run: |
+          pnpm typecheck
+          pnpm lint
+          pnpm test

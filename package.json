@@ -13,6 +13,7 @@
         "prebuild": "rimraf dist && tsc --noEmit",
         "build": "node esbuild.config.js",
         "lint": "eslint --max-warnings=0",
+        "typecheck": "tsc --noEmit",
         "test": "jest"
     },
     "dependencies": {

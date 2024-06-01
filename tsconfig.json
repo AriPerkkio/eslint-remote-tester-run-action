@@ -9,7 +9,8 @@
         "moduleResolution": "node",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "noImplicitAny": true
+        "noImplicitAny": true,
+        "useUnknownInCatchVariables": false
     },
     "include": ["src", "test"]
 }

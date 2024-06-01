@@ -38,11 +38,10 @@ export const ESLINT_REMOTE_TESTER_BIN =
  * Require peer dependency from consuming projects
  */
 export function requirePeerDependency<
-    T extends PeerDependency = PeerDependency
+    T extends PeerDependency = PeerDependency,
 >(dependency: T): PeerDependencyType<T> {
-    const { minVersion, exportPath, packageJsonPath } = DEPENDENCY_TO_INFO[
-        dependency
-    ];
+    const { minVersion, exportPath, packageJsonPath } =
+        DEPENDENCY_TO_INFO[dependency];
 
     let packageJson;
     try {

@@ -2,7 +2,8 @@
     "name": "eslint-remote-tester-run-action",
     "version": "0.0.1",
     "description": "GitHub Action for running eslint-remote-tester",
-    "main": "dist/index.js",
+    "main": "dist/index.mjs",
+    "type": "module",
     "repository": "https://github.com/AriPerkkio/eslint-remote-tester-run-action",
     "homepage": "https://github.com/AriPerkkio/eslint-remote-tester-run-action",
     "bugs": "https://github.com/AriPerkkio/eslint-remote-tester-run-action",
@@ -10,39 +11,34 @@
     "license": "MIT",
     "packageManager": "pnpm@8.15.8",
     "scripts": {
-        "prebuild": "rimraf dist && tsc --noEmit",
+        "prebuild": "rm -rf ./dist",
         "build": "node esbuild.config.js",
         "lint": "eslint --max-warnings=0",
         "typecheck": "tsc --noEmit",
-        "test": "jest"
+        "test": "vitest"
     },
     "dependencies": {
         "@actions/core": "^1.2.6",
         "@actions/exec": "^1.0.4",
         "@actions/github": "^4.0.0",
-        "eslint-remote-tester": "^2.1.1",
+        "eslint-remote-tester": "^4.0.0",
         "semver": "^7.3.4"
     },
     "devDependencies": {
         "@commitlint/cli": "^11.0.0",
         "@commitlint/config-conventional": "^11.0.0",
-        "@types/eslint": "^7.2.6",
-        "@types/jest": "^26.0.20",
+        "@eslint/js": "^9.4.0",
+        "@types/eslint": "^8.56.10",
         "@types/node": "^14.14.21",
         "@types/semver": "^7.3.4",
-        "@typescript-eslint/eslint-plugin": "^4.14.0",
-        "@typescript-eslint/parser": "^4.14.0",
-        "esbuild": "^0.8.33",
-        "eslint": "^7.18.0",
-        "eslint-config-prettier": "^7.2.0",
-        "eslint-plugin-node": "^11.1.0",
-        "eslint-plugin-prettier": "^3.3.1",
-        "jest": "24",
+        "esbuild": "^0.21.4",
+        "eslint": "^9.4.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.1.3",
         "msw": "^0.26.0",
-        "prettier": "^2.2.1",
-        "rimraf": "^3.0.2",
-        "ts-jest": "24",
-        "ts-node": "^10.4.0",
-        "typescript": "^4.1.3"
+        "prettier": "^3.2.5",
+        "typescript": "^5.4.5",
+        "typescript-eslint": "^7.11.0",
+        "vitest": "^1.6.0"
     }
 }

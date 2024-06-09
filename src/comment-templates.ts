@@ -1,5 +1,5 @@
-import { Result } from 'eslint-remote-tester/dist/exports-for-compare-action';
-import { requirePeerDependency } from './peer-dependencies';
+import type { Result } from 'eslint-remote-tester/dist/exports-for-compare-action';
+import { importPeerDependency } from './peer-dependencies';
 
 // Github API limits body length to 65536. Let's leave some paddings just to be sure.
 const RESULTS_MAX_LENGH = 62000;
@@ -9,11 +9,12 @@ const filterUniqueTruthy = <T>(item: T, index: number, array: T[]) =>
 
 const formatRule = (rule: string | null) => '\n-   `' + rule + '`';
 
-// prettier-ignore
 /**
  * Template for building github issue comment when action run into error
  */
-export const ERROR_TEMPLATE = (error: Error): string =>
+export function createError(error: Error) {
+    // prettier-ignore
+    return '' +
 `Something went wrong. This is likely an internal error of \`eslint-remote-tester-run-action\`.
 
 <details>
@@ -25,16 +26,17 @@ ${error.stack}
 
 </details>
 `;
+}
 
 /**
  * Template used to build github issue comment for successful action run
  */
-export const COMMENT_TEMPLATE = (
+export async function createComment(
     results: Result[],
     repositoryCount: number | undefined,
     maxResultCount: number
-): string => {
-    const { RESULT_PARSER_TO_COMPARE_TEMPLATE } = requirePeerDependency(
+) {
+    const { RESULT_PARSER_TO_COMPARE_TEMPLATE } = await importPeerDependency(
         'eslint-remote-tester'
     );
     const template = RESULT_PARSER_TO_COMPARE_TEMPLATE.markdown.results;
@@ -61,4 +63,4 @@ Rules:${rules.filter(Boolean).map(formatRule).join('')}
 ${limitedResults.map(template).join('\n').slice(0, RESULTS_MAX_LENGH)}
 </details>
 `;
-};
+}

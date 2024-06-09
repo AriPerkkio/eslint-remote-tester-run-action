@@ -1,7 +1,8 @@
-import path from 'path';
+import path from 'node:path';
 import semverCompare from 'semver/functions/compare';
 import * as core from '@actions/core';
 import * as exportsForCompareAction from 'eslint-remote-tester/dist/exports-for-compare-action';
+import { readFileSync } from 'node:fs';
 
 // All available peer dependencies
 type PeerDependency = 'eslint-remote-tester' | never;
@@ -21,8 +22,8 @@ interface DependencyInfo {
 // Changes to minVersion's require major release
 const DEPENDENCY_TO_INFO: Record<PeerDependency, DependencyInfo> = {
     'eslint-remote-tester': {
-        minVersion: '2.1.1',
-        exportPath: 'eslint-remote-tester/dist/exports-for-compare-action',
+        minVersion: '4.0.0',
+        exportPath: 'eslint-remote-tester/dist/exports-for-compare-action.js',
         packageJsonPath: 'eslint-remote-tester/package.json',
         bin: 'eslint-remote-tester',
     },
@@ -37,18 +38,20 @@ export const ESLINT_REMOTE_TESTER_BIN =
 /**
  * Require peer dependency from consuming projects
  */
-export function requirePeerDependency<
-    T extends PeerDependency = PeerDependency
->(dependency: T): PeerDependencyType<T> {
-    const { minVersion, exportPath, packageJsonPath } = DEPENDENCY_TO_INFO[
-        dependency
-    ];
+export async function importPeerDependency<
+    T extends PeerDependency = PeerDependency,
+>(dependency: T): Promise<PeerDependencyType<T>> {
+    const { minVersion, exportPath, packageJsonPath } =
+        DEPENDENCY_TO_INFO[dependency];
 
     let packageJson;
     try {
-        packageJson = require(path.resolve(PATH_PREFIX + packageJsonPath));
-    } catch (e) {
-        throw new Error(`Unable to require ${packageJsonPath}`);
+        packageJson = JSON.parse(
+            readFileSync(path.resolve(PATH_PREFIX + packageJsonPath), 'utf8')
+        );
+    } catch (error) {
+        core.error(`Unable to read ${packageJsonPath}`);
+        throw error;
     }
 
     if (semverCompare(packageJson.version, minVersion) === -1) {
@@ -58,9 +61,10 @@ export function requirePeerDependency<
     }
 
     try {
-        return require(path.resolve(PATH_PREFIX + exportPath));
+        return await import(path.resolve(PATH_PREFIX + exportPath));
     } catch (e) {
         core.error(`Unable to require peerDependency ${dependency}`);
+        core.error(e);
         throw e;
     }
 }

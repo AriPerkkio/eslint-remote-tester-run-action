@@ -1,4 +1,6 @@
-module.exports = {
+import js from '@eslint/js';
+
+export default {
     repositories: ['AriPerkkio/eslint-remote-tester-integration-test-target'],
     extensions: ['.js'],
     pathIgnorePattern: '(expected-to-be-excluded)',
@@ -9,8 +11,5 @@ module.exports = {
         'getter-return',
         'no-compare-neg-zero',
     ],
-    eslintrc: {
-        root: true,
-        extends: ['eslint:recommended'],
-    },
+    eslintConfig: [js.configs.recommended],
 };

@@ -1,7 +1,7 @@
 FROM node:18-alpine
 
-COPY dist/index.js /index.js
+COPY dist/index.mjs /index.mjs
 
 RUN apk add --no-cache git
 
-ENTRYPOINT [ "node", "/index.js" ]
+ENTRYPOINT [ "node", "/index.mjs" ]

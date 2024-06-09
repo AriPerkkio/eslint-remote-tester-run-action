@@ -1,4 +1,4 @@
-const { build } = require('esbuild');
+import esbuild from 'esbuild';
 
 /** @type {import('esbuild/lib/main').BuildOptions} */
 const options = {
@@ -14,13 +14,24 @@ const options = {
         'node:stream',
         'node:util',
         'node:events',
+        'node:fs',
+        'node:path',
     ],
     platform: 'node',
+    format: 'esm',
     outdir: 'dist',
     outbase: 'src',
+    outExtension: { '.js': '.mjs' },
+
+    banner: {
+        js: [
+            `import { createRequire as topLevelCreateRequire } from 'module'`,
+            `const require = topLevelCreateRequire(import.meta.url)`,
+        ].join('\n'),
+    },
 };
 
-build(options).catch(err => {
+esbuild.build(options).catch(err => {
     process.stderr.write(err.stderr);
     process.exit(1);
 });

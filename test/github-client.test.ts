@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import GithubClient from '../src/github-client';
 import {
     onComment,
@@ -25,7 +26,7 @@ async function waitFor(isDone: () => boolean | void): Promise<void> {
     }
 
     await new Promise(resolve => setImmediate(resolve));
-    jest.runOnlyPendingTimers();
+    vi.runOnlyPendingTimers();
 
     return waitFor(isDone);
 }
@@ -69,11 +70,11 @@ describe('github-client', () => {
         times(30)(() => mockApiError.mockReturnValueOnce(true));
         mockNoExistingIssues.mockReturnValueOnce(true);
 
-        jest.useFakeTimers();
+        vi.useFakeTimers({ toFake: ['setTimeout'] });
         GithubClient.postResults(body);
 
         await waitFor(() => expect(onIssueCreated).toHaveBeenCalled());
-        jest.useRealTimers();
+        vi.useRealTimers();
 
         expect(onIssueCreated).toHaveBeenCalledWith({
             owner: 'mock-owner',
@@ -89,11 +90,11 @@ describe('github-client', () => {
         times(31)(() => mockApiError.mockReturnValueOnce(true));
         mockNoExistingIssues.mockReturnValueOnce(true);
 
-        jest.useFakeTimers();
+        vi.useFakeTimers({ toFake: ['setTimeout'] });
         const request = GithubClient.postResults(body);
 
         await waitFor(() => expect(mockApiError).toHaveBeenCalledTimes(31));
-        jest.useRealTimers();
+        vi.useRealTimers();
 
         await expect(request).rejects.toMatchInlineSnapshot(`[HttpError]`);
     });

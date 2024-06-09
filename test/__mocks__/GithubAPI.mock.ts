@@ -1,11 +1,12 @@
+import { vi } from 'vitest';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 export const API_URL = 'https://api.github.com';
-export const mockNoExistingIssues = jest.fn().mockReturnValue(false);
-export const mockApiError = jest.fn().mockReturnValue(false);
-export const onComment = jest.fn();
-export const onIssueCreated = jest.fn();
+export const mockNoExistingIssues = vi.fn().mockReturnValue(false);
+export const mockApiError = vi.fn().mockReturnValue(false);
+export const onComment = vi.fn();
+export const onIssueCreated = vi.fn();
 export const expectedIssueNumber = 999;
 
 const ERROR_BODY_MAX_LENGTH = {

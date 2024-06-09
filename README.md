@@ -24,6 +24,7 @@ Check out the use case description from eslint-remote-tester's documentation: [P
 |              `v2`               |   `1.0.1` or above   |
 |              `v3`               |   `2.1.1` or above   |
 |              `v4`               |   `2.1.1` or above   |
+|              `v5`               |   `4.0.0` or above   |
 
 ## Configuration:
 

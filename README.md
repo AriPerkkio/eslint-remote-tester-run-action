@@ -38,6 +38,10 @@ on:
     schedule: # Every thursday at 00:00
         - cron: '0 00 * * THU'
 
+# Give the workflow permission to create the result issue
+permissions:
+  issues: write
+
 jobs:
     test:
         runs-on: ubuntu-latest

@@ -212,7 +212,7 @@ describe('createError', () => {
               at VitestExecutor.runModule (file://<removed>/node_modules/.pnpm/vite-node@1.6.0_@types+node@14.18.63/node_modules/vite-node/dist/client.mjs:362:11)
               at VitestExecutor.runModule (file://<removed>/node_modules/.pnpm/vitest@1.6.0_@types+node@14.18.63/node_modules/vitest/dist/vendor/execute.fL3szUAI.js:554:20)
               at VitestExecutor.directRequest (file://<removed>/node_modules/.pnpm/vite-node@1.6.0_@types+node@14.18.63/node_modules/vite-node/dist/client.mjs:346:16)
-              at processTicksAndRejections (node:internal/process/task_queues:95:5)
+              at processTicksAndRejections (node:internal/process/task_queues:104:5)
               at VitestExecutor.cachedRequest (file://<removed>/node_modules/.pnpm/vite-node@1.6.0_@types+node@14.18.63/node_modules/vite-node/dist/client.mjs:189:14)
               at VitestExecutor.dependencyRequest (file://<removed>/node_modules/.pnpm/vite-node@1.6.0_@types+node@14.18.63/node_modules/vite-node/dist/client.mjs:233:12)
               at <removed>/test/comment-templates.test.ts:3:31

@@ -25,6 +25,7 @@ Check out the use case description from eslint-remote-tester's documentation: [P
 |              `v3`               |   `2.1.1` or above   |
 |              `v4`               |   `2.1.1` or above   |
 |              `v5`               |   `4.0.0` or above   |
+|              `v6`               |   `4.0.0` or above   |
 
 ## Configuration:
 
@@ -40,7 +41,7 @@ on:
 
 # Give the workflow permission to create the result issue
 permissions:
-  issues: write
+    issues: write
 
 jobs:
     test:
@@ -53,7 +54,7 @@ jobs:
             - run: npm install
             - run: npm link
             - run: npm link eslint-plugin-custom
-            - uses: AriPerkkio/eslint-remote-tester-run-action@v2
+            - uses: AriPerkkio/eslint-remote-tester-run-action@v6
               with:
                   issue-title: 'Results of weekly scheduled smoke test'
                   issue-label: 'smoke-test'
